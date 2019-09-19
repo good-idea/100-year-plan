@@ -1,0 +1,28 @@
+{
+  "name": "100yearplan",
+  "version": "0.0.1",
+  "description": "CMS & Frontend for 100 Year Plan",
+  "main": "index.js",
+  "repository": "https://www.github.com/good-idea/100-year-plan",
+  "author": "Joseph Thomas | Good Idea Studio <joseph@good-idea.studio>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "sanity",
+    "frontend"
+  ],
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "husky": "^3.0.5",
+    "netlify-cli": "^2.15.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

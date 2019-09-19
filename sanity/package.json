@@ -1,0 +1,37 @@
+{
+  "name": "100yearplan",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "package.json",
+  "author": "Joseph Thomas <joseph@good-idea.studio>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "sanity start",
+    "test": "sanity check"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@sanity/base": "^0.142.2",
+    "@sanity/cli": "^0.142.2",
+    "@sanity/components": "^0.142.5",
+    "@sanity/core": "^0.142.5",
+    "@sanity/default-layout": "^0.142.5",
+    "@sanity/default-login": "^0.142.3",
+    "@sanity/desk-tool": "^0.142.5",
+    "prop-types": "^15.6",
+    "react": "^16.2",
+    "react-dom": "^16.2",
+    "sanity-plugin-mux-input": "^0.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3"
+  }
+}
