@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 require('dotenv').config()
 const CopyPlugin = require('copy-webpack-plugin')
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const { CheckerPlugin } = require('awesome-typescript-loader')
 
@@ -49,7 +48,6 @@ module.exports = (env) => {
     },
     resolve: {
       symlinks: true,
-      plugins: [new TsconfigPathsPlugin()],
       extensions: ['.mjs', '.ts', '.tsx', '.js'],
       alias: isDev
         ? {
@@ -94,7 +92,6 @@ module.exports = (env) => {
           minimize: true,
           debug: false,
         }),
-      !isDev && new CopyPlugin([{ from: './public/' }]),
     ].filter(Boolean),
     optimization: {
       minimize: !isDev,
