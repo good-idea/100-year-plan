@@ -9,7 +9,8 @@
   "private": true,
   "workspaces": [
     "sanity",
-    "frontend"
+    "frontend",
+    "mux-upload"
   ],
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",

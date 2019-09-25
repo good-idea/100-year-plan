@@ -5,8 +5,7 @@
 node_modules
 yarn-error.log
 dist
-built
-package-lock.json
+build
 watchfiles.js
 
 

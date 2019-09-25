@@ -1,0 +1,23 @@
+{
+  "name": "simple-mux-upload",
+  "version": "1.0.0",
+  "description": "Simple MUX uploading script",
+  "main": "index.js",
+  "scripts": {
+    "package": "pkg -o upload -t node12-macos ./src/upload.js "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "inquirer": "^7.0.0",
+    "progress-stream": "^2.0.0",
+    "promise-serial": "^0.1.5",
+    "single-line-log": "^1.1.2",
+    "superagent": "^5.1.0"
+  },
+  "devDependencies": {
+    "pkg": "^4.4.0"
+  }
+}
