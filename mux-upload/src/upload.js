@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const request = require('request')
 const superagent = require('superagent')
 const progressStream = require('progress-stream')
@@ -18,8 +19,10 @@ const validateCredentials = (credentials) => {
   return true
 }
 
+const homeDir = require('os').homedir()
+
 const USER_CREDENTIALS_PATH =
-  process.env.CREDENTIALS_PATH || '~/.mux-credentials'
+  process.env.CREDENTIALS_PATH || path.resolve(homeDir, '.mux-credentials')
 
 const promptCredentials = async () => {
   const input = await inquirer.prompt([
@@ -34,7 +37,10 @@ const promptCredentials = async () => {
       message: 'What is your Mux Token Secret?',
     },
   ])
-  return input
+  return {
+    MUX_TOKEN_ID: input.MUX_TOKEN_ID.trim(),
+    MUX_TOKEN_SECRET: input.MUX_TOKEN_SECRET.trim(),
+  }
 }
 
 const saveCredentials = (credentials) => {
@@ -46,22 +52,59 @@ const saveCredentials = (credentials) => {
 
 const getCredentials = async () => {
   const envCreds = dotenv.config({ path: path.resolve(process.cwd(), '.env') })
-  if (envCreds.parsed.MUX_TOKEN_ID && envCreds.parsed.MUX_TOKEN_SECRET)
+  if (
+    envCreds.pared &&
+    envCreds.parsed.MUX_TOKEN_ID &&
+    envCreds.parsed.MUX_TOKEN_SECRET
+  )
     return envCreds.parsed
   if (validateCredentials(envCreds)) return envCreds
 
   const userCreds = dotenv.config({ path: path.resolve(USER_CREDENTIALS_PATH) })
+
+  if (userCreds && userCreds.parsed && validateCredentials(userCreds.parsed))
+    return userCreds.parsed
+
+  const inputCredentials = await promptCredentials()
+  if (!validateCredentials(inputCredentials))
+    throw new Error('MUX_TOKEN_ID and MUX_TOKEN_SECRET must both be provided')
+
+  // get a test upload URL to make sure the tokens are valid
+
+  const uploadUrl = await getUploadUrl(inputCredentials).catch((err) => {
+    if (err.status === 401) {
+      throw new Error(
+        'Mux rejected these credentials. Please check your Token ID and secret and try again.',
+      )
+    }
+  })
+
+  /**
+   * Save the variables
+   */
+  fs.writeFileSync(
+    USER_CREDENTIALS_PATH,
+    `MUX_TOKEN_ID=${inputCredentials.MUX_TOKEN_ID}\nMUX_TOKEN_SECRET=${inputCredentials.MUX_TOKEN_SECRET}`,
+    { flag: 'w' },
+  )
+
+  return inputCredentials
 }
 
-dotenv.config()
-
-const getUploadUrl = () =>
-  new Promise(async (resolve, reject) => {
-    // const credentials = await getCredentials()
-    const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env
+const getUploadUrl = (credentials) =>
+  new Promise((resolve, reject) => {
+    console.log(credentials)
+    // const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env
+    if (
+      !credentials ||
+      !credentials.MUX_TOKEN_ID ||
+      !credentials.MUX_TOKEN_SECRET
+    ) {
+      throw new Error('No credentials were provided')
+    }
     superagent
       .post('https://api.mux.com/video/v1/uploads')
-      .auth(process.env.MUX_TOKEN_ID, process.env.MUX_TOKEN_SECRET)
+      .auth(credentials.MUX_TOKEN_ID, credentials.MUX_TOKEN_SECRET)
       .type('application/json')
       .send({
         new_asset_settings: {
@@ -74,14 +117,13 @@ const getUploadUrl = () =>
         resolve(response.body.data.url)
       })
       .catch((err) => {
-        console.log(err)
-        reject()
+        reject(err)
       })
   })
 
-const uploadFile = async (sourceFile) =>
+const uploadFile = async (credentials, sourceFile) =>
   new Promise(async (resolve) => {
-    const uploadUrl = await getUploadUrl()
+    const uploadUrl = await getUploadUrl(credentials)
 
     const fileSize = fs.statSync(sourceFile).size
     const stream = fs.createReadStream(sourceFile)
@@ -107,8 +149,9 @@ const uploadFile = async (sourceFile) =>
   })
 
 const init = async () => {
+  const credentials = await getCredentials()
   const files = process.argv.slice(2)
-  const uploads = files.map((file) => () => uploadFile(file))
+  const uploads = files.map((file) => () => uploadFile(credentials, file))
   await promiseSerial(uploads)
 }
 

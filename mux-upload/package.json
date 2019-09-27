@@ -4,7 +4,7 @@
   "description": "Simple MUX uploading script",
   "main": "index.js",
   "scripts": {
-    "package": "pkg -o upload -t node12-macos ./src/upload.js "
+    "package": "pkg -o build/mux-upload -t node12-macos ./src/upload.js"
   },
   "keywords": [],
   "author": "",
