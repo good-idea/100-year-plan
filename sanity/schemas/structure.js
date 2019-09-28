@@ -7,4 +7,7 @@ export default () =>
       S.listItem()
         .title('Websites')
         .child(S.documentTypeList('website')),
+      S.listItem()
+        .title('Videos')
+        .child(S.documentTypeList('mux.videoAsset')),
     ])

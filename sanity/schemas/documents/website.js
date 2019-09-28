@@ -23,6 +23,7 @@ export const website = {
     },
     {
       name: 'video',
+      title: 'Mux Video',
       type: 'muxVideo',
     },
     {
