@@ -74,7 +74,10 @@ class MyPlugin {
           // Manipulate the content
           console.log('DATA')
           console.log(data)
-          if (this.env === production && thsi.siteId !== '100yearplan.world') {
+          if (
+            this.env === 'production' &&
+            this.siteId !== '100yearplan.world'
+          ) {
             data.assets.js = data.assets.js.map(
               (name) => `https://www.100yearplan.world${name}`,
             )
