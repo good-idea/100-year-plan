@@ -46,6 +46,19 @@ export const button = {
           .max(100),
     },
     {
+      name: 'animation',
+      title: 'Animation',
+      type: 'string',
+      options: {
+        list: [
+          { value: 'shrinkGrow', title: 'Shrink & Grow' },
+          { value: 'shake', title: 'Shake' },
+          { value: 'hFilp', title: 'Flip' },
+          { value: 'spin', title: 'Spin' },
+        ],
+      },
+    },
+    {
       name: 'linkType',
       title: 'Link Type',
       type: 'string',
