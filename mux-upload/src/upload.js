@@ -93,8 +93,6 @@ const getCredentials = async () => {
 
 const getUploadUrl = (credentials) =>
   new Promise((resolve, reject) => {
-    console.log(credentials)
-    // const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env
     if (
       !credentials ||
       !credentials.MUX_TOKEN_ID ||
@@ -127,16 +125,25 @@ const uploadFile = async (credentials, sourceFile) =>
 
     const fileSize = fs.statSync(sourceFile).size
     const stream = fs.createReadStream(sourceFile)
+    let complete = 0
 
-    const progress = progressStream({ time: 50, length: fileSize }).on(
-      'progress',
-      (state) => {
-        log(`Uploading ${sourceFile}: ${Math.floor(state.percentage)}%`)
-      },
-    )
+    // const pStream= progressStream({ time: 50, length: fileSize })
+    //
+    // pStream.on(
+    //   'progress',
+    //   (state) => {
+    //     console.log(`Uploading ${sourceFile}: ${Math.floor(state.percentage)}%`)
+    //   },
+    // )
 
     stream
-      .pipe(progress)
+      .on('data', function(data) {
+        complete += data.length
+        var percentage = Math.floor((100 * complete) / fileSize)
+
+        log(data.length)
+        log(`Uploading ${sourceFile}: ${Math.floor(percentage)}%`)
+      })
       .on('error', function(err) {
         console.error(err)
       })
