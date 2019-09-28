@@ -8,22 +8,26 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode development"
+    "start": "webpack-dev-server --mode development",
+    "build": "rimraf build && NODE_ENV=production webpack --env production --mode production"
   },
   "dependencies": {
     "@sanity/client": "^0.142.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-player": "^1.13.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^4.0.0-beta.8",
     "jest": "^24.9.0",
     "react-hot-loader": "^4.12.13",
     "react-testing-library": "^8.0.1",
+    "style-loader": "^1.0.0",
     "ts-jest": "^24.1.0",
     "ts-loader": "^6.1.2",
     "typescript": "^3.6.3",
