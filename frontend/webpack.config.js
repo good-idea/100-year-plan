@@ -90,8 +90,6 @@ class MyPlugin {
   }
 }
 
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms))
-
 module.exports = async (env) => {
   console.log(env)
   if (!process.env.SITE_ID) throw new Error('You must provide a SITE_ID')
@@ -99,8 +97,15 @@ module.exports = async (env) => {
   if (!siteConfig.domain) throw new Error('No site data was found')
   const siteId = siteConfig.domain
   const siteTitle = siteConfig.name
+  const imageUrl =
+    siteConfig.seo && siteConfig.seo.image && siteConfig.seo.image.asset
+      ? siteConfig.seo.image.asset.url
+      : ''
+  const description = siteConfig.seo ? siteConfig.seo.description : ''
+  console.log(siteConfig)
 
-  await sleep(3000)
+  console.log(siteId, siteTitle)
+
   const isDev = env !== 'production'
   return {
     mode: isDev ? 'development' : 'production',
@@ -152,6 +157,8 @@ module.exports = async (env) => {
         templateParameters: {
           siteTitle,
           siteId,
+          description,
+          imageUrl,
         },
       }),
       new MyPlugin({ env, siteId }),
