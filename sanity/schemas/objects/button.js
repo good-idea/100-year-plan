@@ -5,7 +5,8 @@ export const button = {
   fields: [
     {
       type: 'image',
-      name: 'Image',
+      name: 'image',
+      title: 'Image',
       validation: (Rule) => Rule.required(),
     },
     {
