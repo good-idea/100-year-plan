@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player/lib/players/FilePlayer'
 import { Button, Video } from './types'
 
 const { useEffect, useState, useRef } = React
@@ -13,7 +13,8 @@ export const BackgroundVideo = ({
   video,
   setIsPlaying,
 }: BackgroundVideoProps) => {
-  if (!video) return null
+  console.log(video)
+  if (!video || !video.asset) return null
   const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export const BackgroundVideo = ({
 
   const handleError = (err) => {
     console.log(err)
+    console.log(err.message)
   }
 
   const handleOnStart = () => {
@@ -35,7 +37,7 @@ export const BackgroundVideo = ({
     <ReactPlayer
       url={url}
       width="100%"
-      height="100%"
+      height="auto"
       className="main-video"
       playing={playing}
       onStart={handleOnStart}

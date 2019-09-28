@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "SITE_ID=100yearplan.world webpack-dev-server --mode development",
+    "start:kusama": "SITE_ID=yayoikusama.club webpack-dev-server --mode development",
     "build": "rimraf build && NODE_ENV=production webpack --env production --mode production"
   },
   "dependencies": {
@@ -18,6 +19,14 @@
     "react-player": "^1.13.0"
   },
   "devDependencies": {
+    "@types/copy-webpack-plugin": "^5.0.0",
+    "@types/hard-source-webpack-plugin": "^1.0.1",
+    "@types/react": "^16.9.3",
+    "@types/react-dom": "^16.9.1",
+    "@types/webpack": "^4.39.2",
+    "@types/webpack-cleanup-plugin": "^0.5.2",
+    "@types/webpack-dev-server": "^3.1.7",
+    "@types/webpack-merge": "^4.1.5",
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",

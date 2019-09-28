@@ -35,8 +35,6 @@ const client = sanityClient({
 })
 
 const getSiteData = (siteId) => {
-  console.log('fetching', siteId)
-
   return client.fetch(query, { siteId })
 }
 
@@ -60,7 +58,7 @@ const DEV_SERVER = {
   contentBase: path.resolve(__dirname, 'public'),
 }
 
-class MyPlugin {
+class TransformAssetRootPlugin {
   constructor(options) {
     this.siteId = options.siteId
     this.env = options.env
@@ -72,14 +70,12 @@ class MyPlugin {
         'MyPlugin', // <-- Set a meaningful name here for stacktraces
         (data, cb) => {
           // Manipulate the content
-          console.log('DATA')
-          console.log(data)
           if (
             this.env === 'production' &&
             this.siteId !== '100yearplan.world'
           ) {
             data.assets.js = data.assets.js.map(
-              (name) => `https://www.100yearplan.world${name}`,
+              (name) => `https://100yearplan-world.netlify.com${name}`,
             )
           }
           // Tell webpack to move on
@@ -91,7 +87,6 @@ class MyPlugin {
 }
 
 module.exports = async (env) => {
-  console.log(env)
   if (!process.env.SITE_ID) throw new Error('You must provide a SITE_ID')
   const siteConfig = await getSiteData(process.env.SITE_ID)
   if (!siteConfig.domain) throw new Error('No site data was found')
@@ -102,9 +97,6 @@ module.exports = async (env) => {
       ? siteConfig.seo.image.asset.url
       : ''
   const description = siteConfig.seo ? siteConfig.seo.description : ''
-  console.log(siteConfig)
-
-  console.log(siteId, siteTitle)
 
   const isDev = env !== 'production'
   return {
@@ -161,11 +153,8 @@ module.exports = async (env) => {
           imageUrl,
         },
       }),
-      new MyPlugin({ env, siteId }),
-      // new HtmlWebpackPlugin({
-      //   template: './public/index.html',
-      // }),
-      // isDev && new webpack.HotModuleReplacementPlugin(),
+      new TransformAssetRootPlugin({ env, siteId }),
+      isDev && new webpack.HotModuleReplacementPlugin(),
       isDev && new webpack.NamedModulesPlugin(),
       !isDev &&
         new webpack.LoaderOptionsPlugin({

@@ -31,14 +31,20 @@ export const App = ({ siteId }: AppProps) => {
   }
   const { video, buttons } = siteData
 
+  console.log(siteData)
+
   return (
     <main>
       {video ? (
         <BackgroundVideo video={video.video} setIsPlaying={setIsPlaying} />
       ) : null}
-      {buttons && buttons.length
-        ? buttons.map((button, index) => <Button key={index} button={button} />)
-        : null}
+      <div className="buttons">
+        {buttons && buttons.length
+          ? buttons.map((button, index) => (
+              <Button key={index} button={button} />
+            ))
+          : null}
+      </div>
     </main>
   )
 }
