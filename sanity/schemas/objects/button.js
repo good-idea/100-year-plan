@@ -21,29 +21,20 @@ export const button = {
       name: 'x',
       title: 'X-position (0-100)',
       type: 'number',
-      validation: (Rule) =>
-        Rule.required()
-          .min(0)
-          .max(100),
+      validation: (Rule) => Rule.min(0).max(100),
     },
     {
       name: 'y',
       title: 'Y-position (0-100)',
       type: 'number',
-      validation: (Rule) =>
-        Rule.required()
-          .min(0)
-          .max(100),
+      validation: (Rule) => Rule.min(0).max(100),
     },
     {
       name: 'w',
       title: 'Width (0-100)',
       description: 'image width relative to the video / viewport',
       type: 'number',
-      validation: (Rule) =>
-        Rule.required()
-          .min(0)
-          .max(100),
+      validation: (Rule) => Rule.min(0).max(100),
     },
     {
       name: 'animation',

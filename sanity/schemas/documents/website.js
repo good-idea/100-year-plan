@@ -27,6 +27,11 @@ export const website = {
       type: 'muxVideo',
     },
     {
+      name: 'playButton',
+      title: 'Play Button',
+      type: 'button',
+    },
+    {
       name: 'buttons',
       type: 'array',
       of: [{ type: 'button' }],
