@@ -18,7 +18,6 @@ export const App = ({ siteId }: AppProps) => {
   const { data, loading, errorMessage } = useSiteData(siteId)
 
   const { appState, actions } = useAppState()
-  console.log(appState)
   if (loading) return null
   if (errorMessage)
     return (
@@ -34,19 +33,32 @@ export const App = ({ siteId }: AppProps) => {
     )
   }
   const { domains, siteData } = data
-  const { video, buttons } = siteData
+  const { video, buttons, playButtonImage } = siteData
+  const { initialized, isPlaying } = appState
 
   const fill = siteData.domain !== '100yearplan.world'
 
-  const wrapperClass = fill
-    ? 'main-wrapper'
-    : 'main-wrapper main-wrapper--padding'
+  const mainClass = [initialized ? 'ready' : null, isPlaying ? 'playing' : null]
+    .filter(Boolean)
+    .join(' ')
+
+  const wrapperClass = [
+    'main-wrapper',
+    fill ? 'main-wrapper main-wrapper--padding' : null,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
-    <main>
+    <main className={mainClass}>
       <div className={wrapperClass}>
         {video ? (
-          <BackgroundVideo video={video.video} actions={actions} />
+          <BackgroundVideo
+            playButtonImage={playButtonImage}
+            video={video.video}
+            appState={appState}
+            actions={actions}
+          />
         ) : null}
         <div className="buttons">
           {buttons && buttons.length

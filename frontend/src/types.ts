@@ -61,6 +61,7 @@ export interface SiteData {
   name: string
   domain: string
   buttons: Button[]
+  playButtonImage: SanityImage
   seo: {
     _type: 'seo'
     description?: string

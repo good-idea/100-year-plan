@@ -75,6 +75,11 @@ const query = `
 {
   "domains": *[_type == 'website'].domain,
 	"siteData": *[_type == 'website' && domain == $siteId][0]{
+    playButtonImage{
+      asset->{
+        ...
+      }
+    },
     buttons[]{
       label,
       image{

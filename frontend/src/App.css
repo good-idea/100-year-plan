@@ -16,6 +16,9 @@ main {
 main {
   position: relative;
 }
+/**
+ * Main wrapper & sizing 
+ */
 
 .main-wrapper {
   position: relative;
@@ -39,6 +42,59 @@ main {
   object-fit: cover;
   z-index: 0;
 }
+
+/**
+ * Play Button & Video Visiblity
+ */
+
+.buttons,
+.video-wrapper video,
+.video-wrapper button {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-wrapper button {
+  cursor: pointer;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-wrapper button img {
+  width: calc(100% - 40px);
+  max-width: 350px;
+}
+
+main.ready .video-wrapper button {
+  opacity: 1;
+  pointer-events: initial;
+}
+
+main.ready.playing .video-wrapper button {
+  opacity: 0;
+  pointer-events: none;
+}
+
+main.ready.playing .buttons,
+main.ready.playing .video-wrapper video {
+  opacity: 1;
+  pointer-events: initial;
+}
+
+/**
+ * Buttons
+ */
 
 .buttons {
   position: absolute;

@@ -1,13 +1,15 @@
 import * as React from 'react'
 import ReactPlayer from 'react-player/lib/players/FilePlayer'
-import { Button, Video } from './types'
-import { Actions } from './AppState'
+import { Button, Video, SanityImage } from './types'
+import { AppState, Actions } from './AppState'
 
 const { useEffect, useState, useRef } = React
 
 interface BackgroundVideoProps {
   video?: Video
   actions: Actions
+  appState: AppState
+  playButtonImage: SanityImage
 }
 
 interface PlayProgress {
@@ -17,18 +19,31 @@ interface PlayProgress {
   loadedSeconds: number
 }
 
-export const BackgroundVideo = ({ video, actions }: BackgroundVideoProps) => {
+export const BackgroundVideo = ({
+  video,
+  actions,
+  appState,
+  playButtonImage,
+}: BackgroundVideoProps) => {
   if (!video || !video.asset) return null
   const [playing, setPlaying] = useState(false)
 
   const url = `https://stream.mux.com/${video.asset.playbackId}.m3u8`
 
   /**
+   * State
+   */
+
+  const play = () => setPlaying(true)
+
+  /**
    * Effects
    */
+
   useEffect(() => {
-    setPlaying(true)
+    play()
   }, [])
+
   /**
    * Handlers
    */
@@ -47,20 +62,26 @@ export const BackgroundVideo = ({ video, actions }: BackgroundVideoProps) => {
   }
 
   return (
-    <ReactPlayer
-      url={url}
-      width="100%"
-      height="100%"
-      className="main-video"
-      playing={playing}
-      onReady={onReady}
-      onStart={onStart}
-      onPlay={onPlay}
-      onPause={onPause}
-      onProgress={onProgress}
-      onError={handleError}
-      volume={window.location.hostname === 'localhost' ? 0 : 1}
-      loop
-    />
+    <div className="video-wrapper">
+      <button onClick={play} className="play-button">
+        <img src={playButtonImage.asset.url} alt="Play" />
+      </button>
+      <ReactPlayer
+        url={url}
+        width="100%"
+        height="100%"
+        className="main-video"
+        playing={playing}
+        onReady={onReady}
+        onStart={onStart}
+        onPlay={onPlay}
+        onPause={onPause}
+        onProgress={onProgress}
+        onError={handleError}
+        progressInterval={200}
+        volume={window.location.hostname === 'localhost' ? 0 : 1}
+        loop
+      />
+    </div>
   )
 }
