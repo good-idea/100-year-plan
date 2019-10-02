@@ -21,7 +21,7 @@ export const Button = ({ button, domains }: ButtonProps) => {
       : undefined
 
   if (!image || !domain) return null
-  const link = `https://${domain}`
+  const link = `https://www.${domain}`
   const src = image.asset.url
   const styles = {
     width: `${w}%`,

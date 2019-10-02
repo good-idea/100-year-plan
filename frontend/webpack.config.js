@@ -97,6 +97,7 @@ module.exports = async (env) => {
       ? siteConfig.seo.image.asset.url
       : ''
   const description = siteConfig.seo ? siteConfig.seo.description : ''
+  const canonical = `https://www.${siteConfig.domain}`
 
   const isDev = env !== 'production'
   return {
@@ -110,7 +111,7 @@ module.exports = async (env) => {
       path: PATHS.dist,
       filename: isDev
         ? `${PATHS.js}/[name].js`
-        : `${PATHS.js}/[name].[hash].js`,
+        : `${PATHS.js}/[name].js?hash=[hash]`,
       publicPath: '/',
     },
     resolve: {
@@ -151,6 +152,7 @@ module.exports = async (env) => {
           siteId,
           description,
           imageUrl,
+          canonical,
         },
       }),
       new TransformAssetRootPlugin({ env, siteId }),
@@ -176,8 +178,8 @@ module.exports = async (env) => {
             test: /[\\/]node_modules[\\/]/,
             chunks: 'all',
             filename: isDev
-              ? `${PATHS.js}/vendor.[hash].js`
-              : `${PATHS.js}/vendor.[contentHash].js`,
+              ? `${PATHS.js}/vendor.js?hash=[hash]`
+              : `${PATHS.js}/vendor.js?hash=[contentHash]`,
             priority: -10,
           },
         },
