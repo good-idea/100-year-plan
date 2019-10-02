@@ -34,7 +34,10 @@ export const BackgroundVideo = ({
    * State
    */
 
-  const play = () => setPlaying(true)
+  const play = () => {
+    console.log('play?')
+    setPlaying(true)
+  }
 
   /**
    * Effects
