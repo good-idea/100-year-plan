@@ -5,6 +5,7 @@ import { ErrorDisplay } from './ErrorDisplay'
 import { BackgroundVideo } from './BackgroundVideo'
 import { Button } from './Button'
 import { pickRandom } from './utils'
+import { useAppState, AppState } from './AppState'
 
 const { useState } = React
 
@@ -16,7 +17,8 @@ export const App = ({ siteId }: AppProps) => {
   if (!siteId) throw new Error('No site was provided')
   const { data, loading, errorMessage } = useSiteData(siteId)
 
-  const [isPlaying, setIsPlaying] = useState(false)
+  const { appState, actions } = useAppState()
+  console.log(appState)
   if (loading) return null
   if (errorMessage)
     return (
@@ -44,7 +46,7 @@ export const App = ({ siteId }: AppProps) => {
     <main>
       <div className={wrapperClass}>
         {video ? (
-          <BackgroundVideo video={video.video} setIsPlaying={setIsPlaying} />
+          <BackgroundVideo video={video.video} actions={actions} />
         ) : null}
         <div className="buttons">
           {buttons && buttons.length

@@ -13,15 +13,15 @@
     "build": "rimraf build && NODE_ENV=production webpack --env production --mode production"
   },
   "dependencies": {
-    "@sanity/client": "^0.142.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "@sanity/client": "^0.142.6",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
     "react-player": "^1.13.0"
   },
   "devDependencies": {
     "@types/copy-webpack-plugin": "^5.0.0",
     "@types/hard-source-webpack-plugin": "^1.0.1",
-    "@types/react": "^16.9.3",
+    "@types/react": "^16.9.4",
     "@types/react-dom": "^16.9.1",
     "@types/webpack": "^4.39.2",
     "@types/webpack-cleanup-plugin": "^0.5.2",
@@ -34,17 +34,17 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^4.0.0-beta.8",
     "jest": "^24.9.0",
-    "react-hot-loader": "^4.12.13",
+    "react-hot-loader": "^4.12.14",
     "react-testing-library": "^8.0.1",
     "style-loader": "^1.0.0",
     "ts-jest": "^24.1.0",
-    "ts-loader": "^6.1.2",
+    "ts-loader": "^6.2.0",
     "typescript": "^3.6.3",
     "typesync": "^0.6.1",
-    "webpack": "^4.40.2",
+    "webpack": "^4.41.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1",
+    "webpack-dev-server": "^3.8.2",
     "webpack-merge": "^4.2.2"
   }
 }

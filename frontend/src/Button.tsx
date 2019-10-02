@@ -10,7 +10,6 @@ interface ButtonProps {
 export const Button = ({ button, randomDomain }: ButtonProps) => {
   const { x, y, w, image, siteLink, label } = button
   const domain = randomDomain || (siteLink ? siteLink.domain : null)
-  console.log(domain)
   if (!image || !domain) return null
   const link = `https://${domain}`
   const src = image.asset.url
