@@ -17,12 +17,37 @@ main {
   position: relative;
 }
 
-.main-video {
+.main-wrapper {
+  position: relative;
+}
+
+@media screen and (max-aspect-ratio: 16/9) {
+  .main-wrapper.main-wrapper--padding {
+    width: 177.7vh;
+  }
+}
+
+@media screen and (min-aspect-ratio: 16/9) {
+  .main-wrapper.main-wrapper--padding {
+    width: 100%;
+    height: 56vw;
+  }
+}
+
+.main-video video {
   pointer-events: none;
   z-index: 0;
+
+  pointer-events: none;
+  object-fit: cover;
 }
 
 .buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .button {
@@ -30,7 +55,7 @@ main {
   opacity: 1;
   z-index: 10;
   display: block;
-
+  transform: translate(-50%, -50%);
   background: rgba(145, 145, 255, 0.4);
 }
 
@@ -41,8 +66,4 @@ main {
 
 .button--visible {
   opacity: 1;
-}
-
-.main-video video {
-  pointer-events: none;
 }

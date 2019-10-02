@@ -37,11 +37,12 @@ export const BackgroundVideo = ({
     <ReactPlayer
       url={url}
       width="100%"
-      height="auto"
+      height="100%"
       className="main-video"
       playing={playing}
       onStart={handleOnStart}
       onError={handleError}
+      volume={window.location.hostname === 'localhost' ? 0 : 1}
       loop
     />
   )

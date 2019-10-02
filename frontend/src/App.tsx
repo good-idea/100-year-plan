@@ -31,19 +31,25 @@ export const App = ({ siteId }: AppProps) => {
   }
   const { video, buttons } = siteData
 
-  console.log(siteData)
+  const fill = siteData.domain !== '100yearplan.world'
+
+  const wrapperClass = fill
+    ? 'main-wrapper'
+    : 'main-wrapper main-wrapper--padding'
 
   return (
     <main>
-      {video ? (
-        <BackgroundVideo video={video.video} setIsPlaying={setIsPlaying} />
-      ) : null}
-      <div className="buttons">
-        {buttons && buttons.length
-          ? buttons.map((button, index) => (
-              <Button key={index} button={button} />
-            ))
-          : null}
+      <div className={wrapperClass}>
+        {video ? (
+          <BackgroundVideo video={video.video} setIsPlaying={setIsPlaying} />
+        ) : null}
+        <div className="buttons">
+          {buttons && buttons.length
+            ? buttons.map((button, index) => (
+                <Button key={index} button={button} />
+              ))
+            : null}
+        </div>
       </div>
     </main>
   )
