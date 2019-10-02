@@ -4,6 +4,7 @@ import { useSiteData } from './hooks/sanity'
 import { ErrorDisplay } from './ErrorDisplay'
 import { BackgroundVideo } from './BackgroundVideo'
 import { Button } from './Button'
+import { pickRandom } from './utils'
 
 const { useState } = React
 
@@ -13,7 +14,8 @@ interface AppProps {
 
 export const App = ({ siteId }: AppProps) => {
   if (!siteId) throw new Error('No site was provided')
-  const { siteData, loading, errorMessage } = useSiteData(siteId)
+  const { data, loading, errorMessage } = useSiteData(siteId)
+
   const [isPlaying, setIsPlaying] = useState(false)
   if (loading) return null
   if (errorMessage)
@@ -22,13 +24,14 @@ export const App = ({ siteId }: AppProps) => {
         <ErrorDisplay errorMessage={errorMessage} />
       </main>
     )
-  if (!siteData) {
+  if (!data) {
     return (
       <main>
         <ErrorDisplay errorMessage="There was a problem" />
       </main>
     )
   }
+  const { domains, siteData } = data
   const { video, buttons } = siteData
 
   const fill = siteData.domain !== '100yearplan.world'
@@ -46,7 +49,13 @@ export const App = ({ siteId }: AppProps) => {
         <div className="buttons">
           {buttons && buttons.length
             ? buttons.map((button, index) => (
-                <Button key={index} button={button} />
+                <Button
+                  key={index}
+                  button={button}
+                  randomDomain={
+                    button.linkType === 'random' ? pickRandom(domains) : null
+                  }
+                />
               ))
             : null}
         </div>

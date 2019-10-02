@@ -12,9 +12,14 @@ const client = sanityClient({
  * State
  */
 
+interface AllData {
+  siteData: SiteData
+  domains: string[]
+}
+
 interface State {
   loading: boolean
-  siteData?: SiteData
+  data?: AllData
   errorMessage?: string
 }
 
@@ -32,7 +37,7 @@ interface FetchingAction {
 
 interface SuccessAction {
   type: typeof SUCCESS
-  siteData: SiteData
+  data: AllData
 }
 
 interface ErrorAction {
@@ -42,7 +47,7 @@ interface ErrorAction {
 
 type Action = ErrorAction | SuccessAction | FetchingAction
 
-const reducer = (state: State, action: Action) => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case FETCHING:
       return {
@@ -52,7 +57,7 @@ const reducer = (state: State, action: Action) => {
     case SUCCESS:
       return {
         loading: false,
-        siteData: action.siteData,
+        data: action.data,
       }
     case ERROR:
       return {
@@ -67,36 +72,39 @@ const initialState: State = {
 }
 
 const query = `
-*[_type == 'website' && domain == $siteId][0]{
-	buttons[]{
-  	label,
-    image{
-    	asset->{
-    		...
-  		},	
-  	},
-    siteLink->{
-      domain
-  	},
-    ...
-	},
-    video {
-      video {
-        asset->{
-          ...
-        },
-      },
-    },
-    seo {
-      _type,
-      description,
+{
+  "domains": *[_type == 'website'].domain,
+	"siteData": *[_type == 'website' && domain == $siteId][0]{
+    buttons[]{
+      label,
       image{
         asset->{
           ...
+        },	
+      },
+      siteLink->{
+        domain
+      },
+      ...
+    },
+      video {
+        video {
+          asset->{
+            ...
+          },
         },
       },
-    },
-  ...
+      seo {
+        _type,
+        description,
+        image{
+          asset->{
+            ...
+          },
+        },
+      },
+    ...
+  },
 }
 `
 
@@ -110,8 +118,8 @@ export const useSiteData = (siteId: string): State => {
   const fetchSiteData = async () => {
     dispatch({ type: FETCHING })
     try {
-      const siteData = await client.fetch(query, { siteId })
-      dispatch({ type: SUCCESS, siteData })
+      const data = await client.fetch(query, { siteId })
+      dispatch({ type: SUCCESS, data })
     } catch (err) {
       const errorMessage = err.message.startsWith('Network error')
         ? 'There was an error loading the site data. If you are using an ad blocker, make sure that ddpo9nmo.api.sanity.io is not blocked'

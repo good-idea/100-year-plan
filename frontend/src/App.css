@@ -36,10 +36,8 @@ main {
 
 .main-video video {
   pointer-events: none;
-  z-index: 0;
-
-  pointer-events: none;
   object-fit: cover;
+  z-index: 0;
 }
 
 .buttons {
