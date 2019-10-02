@@ -34,10 +34,7 @@ export const BackgroundVideo = ({
    * State
    */
 
-  const play = () => {
-    console.log('play?')
-    setPlaying(true)
-  }
+  const play = () => setPlaying(true)
 
   /**
    * Effects
@@ -59,9 +56,12 @@ export const BackgroundVideo = ({
   const onProgress = (progress: PlayProgress) =>
     updateTime(progress.playedSeconds)
 
-  const handleError = (err) => {
+  const handleError = (err, data) => {
     console.log(err)
     console.log(err.message)
+    console.log(data)
+    // if (data && data)
+    setPlaying(false)
   }
 
   return (
@@ -82,6 +82,14 @@ export const BackgroundVideo = ({
         onProgress={onProgress}
         onError={handleError}
         progressInterval={200}
+        config={{
+          file: {
+            hlsOptions: {
+              nudgeOffset: 0.3,
+              nudgeMaxRetry: 10,
+            },
+          },
+        }}
         volume={window.location.hostname === 'localhost' ? 0 : 1}
         loop
       />

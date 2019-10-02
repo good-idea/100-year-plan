@@ -4,7 +4,6 @@ import { useSiteData } from './hooks/sanity'
 import { ErrorDisplay } from './ErrorDisplay'
 import { BackgroundVideo } from './BackgroundVideo'
 import { Button } from './Button'
-import { pickRandom } from './utils'
 import { useAppState, AppState } from './AppState'
 
 const { useState } = React
@@ -36,18 +35,19 @@ export const App = ({ siteId }: AppProps) => {
   const { video, buttons, playButtonImage } = siteData
   const { initialized, isPlaying } = appState
 
-  const fill = siteData.domain !== '100yearplan.world'
-
   const mainClass = [initialized ? 'ready' : null, isPlaying ? 'playing' : null]
     .filter(Boolean)
     .join(' ')
 
+  const cover = siteData.domain !== '100yearplan.world'
   const wrapperClass = [
     'main-wrapper',
-    fill ? 'main-wrapper main-wrapper--padding' : null,
+    cover ? 'main-wrapper--cover' : 'main-wrapper--padding',
   ]
     .filter(Boolean)
     .join(' ')
+
+  const otherDomains = domains.filter((d) => d !== siteData.domain)
 
   return (
     <main className={mainClass}>
@@ -63,13 +63,7 @@ export const App = ({ siteId }: AppProps) => {
         <div className="buttons">
           {buttons && buttons.length
             ? buttons.map((button, index) => (
-                <Button
-                  key={index}
-                  button={button}
-                  randomDomain={
-                    button.linkType === 'random' ? pickRandom(domains) : null
-                  }
-                />
+                <Button key={index} button={button} domains={otherDomains} />
               ))
             : null}
         </div>

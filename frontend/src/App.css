@@ -15,13 +15,20 @@ main {
 
 main {
   position: relative;
+  overflow: hidden;
 }
+
+main.playing {
+  overflow: scroll;
+}
+
 /**
  * Main wrapper & sizing 
  */
 
 .main-wrapper {
   position: relative;
+  width: 100%;
 }
 
 @media screen and (max-aspect-ratio: 16/9) {
@@ -49,17 +56,17 @@ main {
 
 .buttons,
 .video-wrapper video,
-.video-wrapper button {
+.play-button {
   opacity: 0;
   pointer-events: none;
 }
 
-.video-wrapper button {
+.play-button {
   cursor: pointer;
   border: 0;
   margin: 0;
   padding: 0;
-  background-color: transparent;
+  background-color: green;
   position: fixed;
   top: 0;
   left: 0;
@@ -71,17 +78,17 @@ main {
   align-items: center;
 }
 
-.video-wrapper button img {
+.play-button img {
   width: calc(100% - 40px);
   max-width: 350px;
 }
 
-main.ready .video-wrapper button {
+main.ready .play-button {
   opacity: 1;
   pointer-events: initial;
 }
 
-main.ready.playing .video-wrapper button {
+main.ready.playing .play-button {
   opacity: 0;
   pointer-events: none;
 }
