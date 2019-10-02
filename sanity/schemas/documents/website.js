@@ -27,9 +27,9 @@ export const website = {
       type: 'muxVideo',
     },
     {
-      name: 'playButton',
-      title: 'Play Button',
-      type: 'button',
+      name: 'playButtonImage',
+      type: 'image',
+      validation: (Rule) => Rule.required(),
     },
     {
       name: 'buttons',
