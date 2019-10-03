@@ -30,13 +30,7 @@ export const Button = ({ button, domains }: ButtonProps) => {
   }
 
   return (
-    <a
-      href={link}
-      style={styles}
-      className="button"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a href={link} style={styles} className="button" rel="noopener noreferrer">
       <img src={src} alt={label} />
     </a>
   )
