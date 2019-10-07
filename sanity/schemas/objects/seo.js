@@ -13,5 +13,10 @@ export const seo = {
       title: 'Image',
       type: 'image',
     },
+    {
+      name: 'siteVerification',
+      title: 'Google Site Verification Code',
+      type: 'string',
+    },
   ],
 }
