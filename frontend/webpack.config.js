@@ -96,8 +96,11 @@ module.exports = async (env) => {
     siteConfig.seo && siteConfig.seo.image && siteConfig.seo.image.asset
       ? siteConfig.seo.image.asset.url
       : ''
-  const description = siteConfig.seo ? siteConfig.seo.description : ''
+  const description = siteConfig.seo ? siteConfig.seo.description || '' : ''
   const canonical = `https://www.${siteConfig.domain}`
+  const verificationCode = siteConfig.seo
+    ? siteConfig.seo.verificationCode || ''
+    : ''
 
   const isDev = env !== 'production'
   return {
@@ -148,6 +151,7 @@ module.exports = async (env) => {
       }),
       new HtmlWebpackPlugin({
         templateParameters: {
+          verificationCode,
           siteTitle,
           siteId,
           description,
