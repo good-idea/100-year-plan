@@ -123,12 +123,10 @@ main.ready.playing .video-wrapper video {
   z-index: 10;
   display: block;
   transform: translate(-50%, -50%);
-  background: rgba(145, 145, 255, 0.4);
 }
 
 .button img {
   max-width: 100%;
-  outline: 1px solid blue;
 }
 
 .button--visible {
