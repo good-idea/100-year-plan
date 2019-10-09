@@ -98,7 +98,9 @@ const query = `
           asset->{
             ...
           },
+            ...
         },
+        ...
       },
       seo {
         _type,

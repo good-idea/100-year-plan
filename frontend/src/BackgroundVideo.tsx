@@ -19,6 +19,11 @@ interface PlayProgress {
   loadedSeconds: number
 }
 
+interface ReactPlayerRef {
+  seekTo: (num: number) => void
+  getDuration: () => number
+}
+
 export const BackgroundVideo = ({
   video,
   actions,
@@ -27,6 +32,8 @@ export const BackgroundVideo = ({
 }: BackgroundVideoProps) => {
   if (!video || !video.asset) return null
   const [playing, setPlaying] = useState(false)
+  const [duration, setDuration] = useState(0)
+  const playerRef = useRef<ReactPlayerRef>(null)
 
   const url = `https://stream.mux.com/${video.asset.playbackId}.m3u8`
 
@@ -53,8 +60,9 @@ export const BackgroundVideo = ({
   const onStart = () => setPlayState(true)
   const onPlay = () => setPlayState(true)
   const onPause = () => setPlayState(false)
-  const onProgress = (progress: PlayProgress) =>
+  const onProgress = async (progress: PlayProgress) => {
     updateTime(progress.playedSeconds)
+  }
 
   const handleError = (err, data) => {
     console.log(err)
@@ -68,8 +76,14 @@ export const BackgroundVideo = ({
     maxWidth: playButtonImage.maxWidth,
   }
 
+  const backgroundImage =
+    'url(https://image.mux.com/hnt9Ox2996X4JPdmSKuNH8602jVAAyNBv/thumbnail.png?time=0)'
+  const backgroundStyles = {
+    backgroundImage,
+  }
+
   return (
-    <div className="video-wrapper">
+    <div style={backgroundStyles} className="video-wrapper">
       <button onClick={play} className="play-button">
         <img
           src={playButtonImage.asset.url}
@@ -78,10 +92,13 @@ export const BackgroundVideo = ({
         />
       </button>
       <ReactPlayer
+        ref={playerRef}
         url={url}
         width="100%"
         height="100%"
         className="main-video"
+        loop={true}
+        controls={false}
         playing={playing}
         onReady={onReady}
         onStart={onStart}
@@ -90,6 +107,7 @@ export const BackgroundVideo = ({
         onProgress={onProgress}
         onError={handleError}
         progressInterval={200}
+        playsinline
         config={{
           file: {
             hlsOptions: {
@@ -99,7 +117,6 @@ export const BackgroundVideo = ({
           },
         }}
         volume={window.location.hostname === 'localhost' ? 0 : 1}
-        loop
       />
     </div>
   )

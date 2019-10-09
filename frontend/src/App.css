@@ -54,6 +54,10 @@ main.playing {
  * Play Button & Video Visiblity
  */
 
+.video-wrapper {
+  background-size: cover;
+}
+
 .buttons,
 .video-wrapper video,
 .play-button {
