@@ -78,7 +78,8 @@ const query = `
     playButtonImage{
       asset->{
         ...
-      }
+      },
+      ...
     },
     buttons[]{
       label,

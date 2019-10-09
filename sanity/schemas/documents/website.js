@@ -30,6 +30,18 @@ export const website = {
       name: 'playButtonImage',
       type: 'image',
       validation: (Rule) => Rule.required(),
+      fields: [
+        {
+          name: 'maxWidth',
+          title: 'Max Width',
+          type: 'number',
+          description: 'Optional max width (in px)',
+          validation: (Rule) => Rule.min(0),
+          options: {
+            isHighlighted: true,
+          },
+        },
+      ],
     },
     {
       name: 'buttons',

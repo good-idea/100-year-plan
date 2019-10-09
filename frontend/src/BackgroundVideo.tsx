@@ -64,10 +64,18 @@ export const BackgroundVideo = ({
     setPlaying(false)
   }
 
+  const playButtonStyles = {
+    maxWidth: playButtonImage.maxWidth,
+  }
+
   return (
     <div className="video-wrapper">
       <button onClick={play} className="play-button">
-        <img src={playButtonImage.asset.url} alt="Play" />
+        <img
+          src={playButtonImage.asset.url}
+          style={playButtonStyles}
+          alt="Play"
+        />
       </button>
       <ReactPlayer
         url={url}

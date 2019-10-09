@@ -34,6 +34,7 @@ export interface Video {
 export interface SanityImage {
   _key: string
   _type: string
+  maxWidth?: number
   asset: {
     _id: string
     _type: string
