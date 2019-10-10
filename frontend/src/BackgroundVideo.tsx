@@ -57,7 +57,7 @@ export const BackgroundVideo = ({
    */
 
   const { initialize, setPlayState, updateTime } = actions
-  const onReady = initialize
+  const onReady = () => initialize()
   const onStart = () => setPlayState(true)
   const onPlay = () => setPlayState(true)
   const onPause = () => setPlayState(false)
@@ -82,7 +82,7 @@ export const BackgroundVideo = ({
   }
 
   return (
-    <div style={backgroundStyles} className="video-wrapper">
+    <div className="video-wrapper">
       <button onClick={play} className="play-button">
         <img
           src={playButtonImage.asset.url}
@@ -96,6 +96,7 @@ export const BackgroundVideo = ({
         width="100%"
         height="100%"
         className="main-video"
+        style={backgroundStyles}
         loop={true}
         controls={false}
         playing={playing}

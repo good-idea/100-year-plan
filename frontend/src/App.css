@@ -59,7 +59,7 @@ main.playing {
 }
 
 .buttons,
-.video-wrapper video,
+.video-wrapper .main-video,
 .play-button {
   opacity: 0;
   pointer-events: none;
@@ -99,7 +99,7 @@ main.ready.playing .play-button {
 }
 
 main.ready.playing .buttons,
-main.ready.playing .video-wrapper video {
+main.ready.playing .video-wrapper .main-video {
   opacity: 1;
   pointer-events: initial;
 }

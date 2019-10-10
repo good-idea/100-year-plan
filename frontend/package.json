@@ -10,6 +10,7 @@
   "scripts": {
     "start": "SITE_ID=100yearplan.world webpack-dev-server --mode development",
     "start:kusama": "SITE_ID=yayoikusama.club webpack-dev-server --mode development",
+    "start:exposed": "SITE_ID=criticalfeedback.exposed webpack-dev-server --mode development",
     "build": "rimraf build && NODE_ENV=production webpack --env production --mode production"
   },
   "dependencies": {
