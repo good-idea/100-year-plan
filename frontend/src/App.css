@@ -71,7 +71,7 @@ main.playing {
   margin: 0;
   padding: 0;
   position: fixed;
-  background-color: none;
+  background-color: black;
   border-width: 0;
   top: 0;
   left: 0;

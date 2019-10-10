@@ -36,6 +36,7 @@ export const BackgroundVideo = ({
   const playerRef = useRef<ReactPlayerRef>(null)
 
   const url = `https://stream.mux.com/${video.asset.playbackId}.m3u8`
+  const backgroundImage = `url(https://image.mux.com/${video.asset.playbackId}/thumbnail.png?time=0)`
 
   /**
    * State
@@ -76,8 +77,6 @@ export const BackgroundVideo = ({
     maxWidth: playButtonImage.maxWidth,
   }
 
-  const backgroundImage =
-    'url(https://image.mux.com/hnt9Ox2996X4JPdmSKuNH8602jVAAyNBv/thumbnail.png?time=0)'
   const backgroundStyles = {
     backgroundImage,
   }
