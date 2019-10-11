@@ -59,8 +59,7 @@ main.playing {
 }
 
 .buttons,
-.video-wrapper .main-video,
-.play-button {
+.video-wrapper .main-video {
   opacity: 0;
   pointer-events: none;
 }
@@ -88,12 +87,16 @@ main.playing {
   max-width: 350px;
 }
 
-main.ready .play-button {
+main .play-button {
   opacity: 1;
   pointer-events: initial;
 }
 
-main.ready.playing .play-button {
+.play-button.buffering {
+  opacity: 0.5;
+}
+
+.play-button.playing {
   opacity: 0;
   pointer-events: none;
 }

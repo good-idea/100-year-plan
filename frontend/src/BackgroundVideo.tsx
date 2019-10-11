@@ -22,6 +22,7 @@ interface PlayProgress {
 interface ReactPlayerRef {
   seekTo: (num: number) => void
   getDuration: () => number
+  getInternalPlayer: () => HTMLVideoElement
 }
 
 export const BackgroundVideo = ({
@@ -42,7 +43,17 @@ export const BackgroundVideo = ({
    * State
    */
 
-  const play = () => setPlaying(true)
+  const play = async () => {
+    if (playerRef && playerRef.current) {
+      try {
+        await playerRef.current.getInternalPlayer().play()
+      } catch (err) {
+        console.log('cannot autoplay')
+      }
+    } else {
+      console.log('no player')
+    }
+  }
 
   /**
    * Effects
@@ -56,12 +67,19 @@ export const BackgroundVideo = ({
    * Handlers
    */
 
-  const { initialize, setPlayState, updateTime } = actions
+  const { initialize, setBuffering, setPlayState, updateTime } = actions
   const onReady = () => initialize()
-  const onStart = () => setPlayState(true)
-  const onPlay = () => setPlayState(true)
+  const onPlay = () => {
+    // do nothing, wait for buffering & progress to set as playing
+  }
+  const onBuffer = () => setBuffering(true)
+  const onBufferEnd = () => setBuffering(false)
   const onPause = () => setPlayState(false)
+
   const onProgress = async (progress: PlayProgress) => {
+    if (appState.isPlaying === false && progress.playedSeconds > 0) {
+      setPlayState(true)
+    }
     updateTime(progress.playedSeconds)
   }
 
@@ -81,9 +99,17 @@ export const BackgroundVideo = ({
     backgroundImage,
   }
 
+  const buttonClass = [
+    'play-button',
+    appState.isBuffering ? 'buffering' : null,
+    appState.isPlaying ? 'playing' : null,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <div className="video-wrapper">
-      <button onClick={play} className="play-button">
+      <button onClick={play} className={buttonClass}>
         <img
           src={playButtonImage.asset.url}
           style={playButtonStyles}
@@ -101,7 +127,8 @@ export const BackgroundVideo = ({
         controls={false}
         playing={playing}
         onReady={onReady}
-        onStart={onStart}
+        onBuffer={onBuffer}
+        onBufferEnd={onBufferEnd}
         onPlay={onPlay}
         onPause={onPause}
         onProgress={onProgress}
@@ -111,8 +138,8 @@ export const BackgroundVideo = ({
         config={{
           file: {
             hlsOptions: {
-              nudgeOffset: 0.3,
-              nudgeMaxRetry: 10,
+              nudgeOffset: 0.1,
+              nudgeMaxRetry: 30,
             },
           },
         }}
