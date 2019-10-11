@@ -43,16 +43,9 @@ export const BackgroundVideo = ({
    * State
    */
 
-  const play = async () => {
-    if (playerRef && playerRef.current) {
-      try {
-        await playerRef.current.getInternalPlayer().play()
-      } catch (err) {
-        console.log('cannot autoplay')
-      }
-    } else {
-      console.log('no player')
-    }
+  const play = () => {
+    if (playerRef && playerRef.current)
+      return playerRef.current.getInternalPlayer().play()
   }
 
   /**
@@ -60,14 +53,27 @@ export const BackgroundVideo = ({
    */
 
   useEffect(() => {
-    play()
+    const autoPlay = async () => {
+      try {
+        await play()
+      } catch (err) {
+        console.log('could not autoplay')
+      }
+    }
+    autoPlay()
   }, [])
 
   /**
    * Handlers
    */
 
-  const { initialize, setBuffering, setPlayState, updateTime } = actions
+  const {
+    initialize,
+    setBuffering,
+    setPlayState,
+    updateTime,
+    startByUserInput,
+  } = actions
   const onReady = () => initialize()
   const onPlay = () => {
     // do nothing, wait for buffering & progress to set as playing
@@ -81,6 +87,15 @@ export const BackgroundVideo = ({
       setPlayState(true)
     }
     updateTime(progress.playedSeconds)
+  }
+
+  const handleClick = async () => {
+    try {
+      startByUserInput()
+      await play()
+    } catch (err) {
+      console.log('could not play on click')
+    }
   }
 
   const handleError = (err, data) => {
@@ -101,15 +116,17 @@ export const BackgroundVideo = ({
 
   const buttonClass = [
     'play-button',
-    appState.isBuffering ? 'buffering' : null,
+    !appState.isPlaying && !appState.startedByUser ? 'ready' : null,
+    appState.startedByUser && !appState.isPlaying ? 'loading' : null,
     appState.isPlaying ? 'playing' : null,
   ]
     .filter(Boolean)
     .join(' ')
+  console.log(appState, buttonClass)
 
   return (
     <div className="video-wrapper">
-      <button onClick={play} className={buttonClass}>
+      <button onClick={handleClick} className={buttonClass}>
         <img
           src={playButtonImage.asset.url}
           style={playButtonStyles}

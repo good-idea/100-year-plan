@@ -92,7 +92,7 @@ main .play-button {
   pointer-events: initial;
 }
 
-.play-button.buffering {
+.play-button.loading {
   opacity: 0.5;
 }
 
