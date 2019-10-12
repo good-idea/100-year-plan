@@ -34,6 +34,7 @@ export const BackgroundVideo = ({
   if (!video || !video.asset) return null
   const [playing, setPlaying] = useState(false)
   const [duration, setDuration] = useState(0)
+  const [time, setTime] = useState(0)
   const playerRef = useRef<ReactPlayerRef>(null)
 
   const url = `https://stream.mux.com/${video.asset.playbackId}.m3u8`
@@ -71,7 +72,7 @@ export const BackgroundVideo = ({
     initialize,
     setBuffering,
     setPlayState,
-    updateTime,
+    // updateTime,
     startByUserInput,
   } = actions
   const onReady = () => initialize()
@@ -86,7 +87,7 @@ export const BackgroundVideo = ({
     if (appState.isPlaying === false && progress.playedSeconds > 0) {
       setPlayState(true)
     }
-    updateTime(progress.playedSeconds)
+    setTime(progress.playedSeconds)
   }
 
   const handleClick = async () => {
@@ -122,7 +123,6 @@ export const BackgroundVideo = ({
   ]
     .filter(Boolean)
     .join(' ')
-  console.log(appState, buttonClass)
 
   return (
     <div className="video-wrapper">

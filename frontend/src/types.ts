@@ -5,7 +5,13 @@ export interface Button {
   label?: string
   linkType: string
   siteLink?: {
+    _type: string
     domain: string
+    title?: string
+    body: any
+    slug: {
+      current: string
+    }
   }
   w: number
   x: number

@@ -1,5 +1,5 @@
 import * as sanityClient from '@sanity/client'
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, Reducer } from 'react'
 import { SiteData } from '../types'
 
 const client = sanityClient({
@@ -12,14 +12,9 @@ const client = sanityClient({
  * State
  */
 
-interface AllData {
-  siteData: SiteData
-  domains: string[]
-}
-
-interface State {
+interface State<Data> {
   loading: boolean
-  data?: AllData
+  data?: Data
   errorMessage?: string
 }
 
@@ -35,9 +30,9 @@ interface FetchingAction {
   type: typeof FETCHING
 }
 
-interface SuccessAction {
+interface SuccessAction<DataType> {
   type: typeof SUCCESS
-  data: AllData
+  data: DataType
 }
 
 interface ErrorAction {
@@ -45,9 +40,12 @@ interface ErrorAction {
   errorMessage: string
 }
 
-type Action = ErrorAction | SuccessAction | FetchingAction
+type Action<T> = ErrorAction | SuccessAction<T> | FetchingAction
 
-const reducer = (state: State, action: Action): State => {
+const createTypedReducer = <T>() => (
+  state: State<T>,
+  action: Action<T>,
+): State<T> => {
   switch (action.type) {
     case FETCHING:
       return {
@@ -67,11 +65,19 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-const initialState: State = {
+const initialState = {
   loading: true,
 }
+/**
+ * Queries
+ */
 
-const query = `
+interface MainPageData {
+  siteData: SiteData
+  domains: string[]
+}
+
+const mainPageQuery = `
 {
   "domains": *[_type == 'website'].domain,
 	"siteData": *[_type == 'website' && domain == $siteId][0]{
@@ -89,7 +95,8 @@ const query = `
         },	
       },
       siteLink->{
-        domain
+        domain,
+        ...
       },
       ...
     },
@@ -116,17 +123,33 @@ const query = `
 }
 `
 
-export const useSiteData = (siteId: string): State => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+interface PageData {
+  title: string
+  body: any[]
+}
+
+const pageQuery = `
+  *[_type == 'page' && slug.current == $slug][0]
+`
+
+/* Generic fetching hook */
+
+const createFetchHook = <DataType>(query: string) => (variables: {
+  [key: string]: string
+}) => {
+  const [state, dispatch] = useReducer(
+    createTypedReducer<DataType>(),
+    initialState,
+  )
 
   /**
    * Dispatchers
    */
 
-  const fetchSiteData = async () => {
+  const fetchData = async () => {
     dispatch({ type: FETCHING })
     try {
-      const data = await client.fetch(query, { siteId })
+      const data = await client.fetch(query, variables)
       dispatch({ type: SUCCESS, data })
     } catch (err) {
       const errorMessage = err.message.startsWith('Network error')
@@ -137,8 +160,69 @@ export const useSiteData = (siteId: string): State => {
   }
 
   useEffect(() => {
-    fetchSiteData()
+    fetchData()
   }, [])
 
   return state
 }
+
+export const useMainQuery = createFetchHook<MainPageData>(mainPageQuery)
+export const usePageQuery = createFetchHook<PageData>(pageQuery)
+
+// export const useSiteData = (siteId: string): State<AllData> => {
+//   const [state, dispatch] = useReducer(createTypedReducer<AllData>(), initialState)
+//
+//   /**
+//    * Dispatchers
+//    */
+//
+//   const fetchSiteData = async () => {
+//     dispatch({ type: FETCHING })
+//     try {
+//       const data = await client.fetch(query, { siteId })
+//       dispatch({ type: SUCCESS, data })
+//     } catch (err) {
+//       const errorMessage = err.message.startsWith('Network error')
+//         ? 'There was an error loading the site data. If you are using an ad blocker, make sure that ddpo9nmo.api.sanity.io is not blocked'
+//         : 'Sorry, there was an error :('
+//       dispatch({ type: ERROR, errorMessage })
+//     }
+//   }
+//
+//   useEffect(() => {
+//     fetchSiteData()
+//   }, [])
+//
+//   return state
+// }
+
+/**
+ * Fetching Pages
+ */
+
+//
+// export const usePageQuery = (slug: string): State<PageData> => {
+//   const [state, dispatch] = useReducer(createTypedReducer<PageData>(), initialState)
+//   /**
+//    * Dispatchers
+//    */
+//
+//   const fetchSiteData = async () => {
+//     dispatch({ type: FETCHING })
+//     try {
+//       const data = await client.fetch(query, { siteId })
+//       dispatch({ type: SUCCESS, data })
+//     } catch (err) {
+//       const errorMessage = err.message.startsWith('Network error')
+//         ? 'There was an error loading the site data. If you are using an ad blocker, make sure that ddpo9nmo.api.sanity.io is not blocked'
+//         : 'Sorry, there was an error :('
+//       dispatch({ type: ERROR, errorMessage })
+//     }
+//   }
+//
+//   useEffect(() => {
+//     fetchSiteData()
+//   }, [])
+//
+//
+// }
