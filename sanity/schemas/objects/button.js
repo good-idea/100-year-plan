@@ -101,25 +101,24 @@ export const button = {
       type: 'array',
       of: [{ type: 'duration' }],
     },
-    {
-      name: 'linkType',
-      title: 'Link Type',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-      options: {
-        list: [
-          { value: 'random', title: 'Random Site' },
-          { value: 'site', title: 'Specified Site' },
-        ],
-        layout: 'radio',
-      },
-    },
+    // {
+    //   name: 'linkType',
+    //   title: 'Link Type',
+    //   type: 'string',
+    //   validation: (Rule) => Rule.required(),
+    //   // options: {
+    //   //   list: [
+    //   //     // { value: 'random', title: 'Random Site' },
+    //   //     { value: 'site', title: 'Specified Site' },
+    //   //   ],
+    //   //   layout: 'radio',
+    //   // },
+    // },
     {
       name: 'siteLink',
-      title: 'Site Link',
-      description: 'Will be ignored if Link Type is set to "random"',
+      title: 'Page or Site Link',
       type: 'reference',
-      to: [{ type: 'website' }],
+      to: [{ type: 'website' }, { type: 'page' }],
     },
   ],
 }
