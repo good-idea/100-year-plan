@@ -129,7 +129,15 @@ interface PageData {
 }
 
 const pageQuery = `
-  *[_type == 'page' && slug.current == $slug][0]
+*[_type == 'page' && slug.current == $slug][0]{
+  body[]{
+    asset->{
+      ...
+    },
+    ...
+  },
+  ...
+}
 `
 
 /* Generic fetching hook */
@@ -150,6 +158,7 @@ const createFetchHook = <DataType>(query: string) => (variables: {
     dispatch({ type: FETCHING })
     try {
       const data = await client.fetch(query, variables)
+      console.log(data)
       dispatch({ type: SUCCESS, data })
     } catch (err) {
       const errorMessage = err.message.startsWith('Network error')

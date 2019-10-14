@@ -1,13 +1,22 @@
 .page {
   position: fixed;
   padding: 20px;
-  left: 20px;
-  top: 20px;
-  width: calc(100% - 40px);
-  min-height: calc(100vh - 40px);
-  background-color: black;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
   z-index: 100;
-  color: white;
+  color: black;
+  overflow-y: scroll;
+}
+
+.page figure,
+.page img {
+  display: block;
+  width: calc(100% + 20px);
+  margin: 0 0 1em;
+  margin-left: -10px;
 }
 
 h1 {
@@ -20,6 +29,19 @@ h2 {
 
 p {
   font-size: 24px;
+}
+
+.page h2 {
+  margin-top: 1.3em;
+  margin-bottom: 0.1em;
+}
+
+.page p {
+  margin-top: 0;
+}
+
+.page a {
+  color: inherit;
 }
 
 .closeButton {
@@ -46,10 +68,10 @@ p {
   }
 
   h2 {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   p {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
