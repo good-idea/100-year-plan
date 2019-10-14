@@ -23,6 +23,7 @@ export const page = {
       title: 'Text',
       type: 'array',
       of: [
+        { type: 'image' },
         {
           type: 'block',
           styles: [
