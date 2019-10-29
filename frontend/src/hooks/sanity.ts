@@ -158,7 +158,6 @@ const createFetchHook = <DataType>(query: string) => (variables: {
     dispatch({ type: FETCHING })
     try {
       const data = await client.fetch(query, variables)
-      console.log(data)
       dispatch({ type: SUCCESS, data })
     } catch (err) {
       const errorMessage = err.message.startsWith('Network error')

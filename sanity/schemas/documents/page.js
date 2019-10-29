@@ -23,7 +23,17 @@ export const page = {
       title: 'Text',
       type: 'array',
       of: [
-        { type: 'image' },
+        {
+          type: 'image',
+          fields: [
+            {
+              type: 'string',
+              name: 'link',
+              title: 'Link',
+              options: { isHighlighted: true },
+            },
+          ],
+        },
         {
           type: 'block',
           styles: [
