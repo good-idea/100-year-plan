@@ -91,7 +91,6 @@ main.playing {
 }
 
 .play-button img {
-  width: calc(100% - 40px);
   max-width: 100%;
 }
 
