@@ -6,7 +6,7 @@ const validateMinutesSeconds = (value) => {
   const matches = Array.from(value.matchAll(digitPattern))
   return matches.reduce((prev, current) => {
     if (prev !== true) return prev
-    const value = match[0]
+    const value = matches[0]
     const time = parseInt(value, 10)
     if (time < 0 || time >= 60) {
       return 'Minutes and seconds must be between 0 and 59'
@@ -24,6 +24,7 @@ export const time = {
       if (!timePattern.test(value)) {
         return 'The value must be in the format mm:ss - i.e. "0:10", ""'
       }
+      console.log(validateMinutesSeconds(value))
       return validateMinutesSeconds(value)
     }),
 }
@@ -119,6 +120,11 @@ export const button = {
       title: 'Page or Site Link',
       type: 'reference',
       to: [{ type: 'website' }, { type: 'page' }],
+    },
+    {
+      name: 'urlLink',
+      title: 'URL link',
+      type: 'url',
     },
   ],
 }
