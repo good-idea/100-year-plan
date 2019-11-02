@@ -1,9 +1,18 @@
+export interface Duration {
+  _key: string
+  _type: string
+  start?: string
+  end?: string
+}
+
 export interface Button {
-  _key
-  _type
+  _key: string
+  _type: string
   image?: SanityImage
   label?: string
   linkType: string
+  durations?: Duration[]
+
   siteLink?: {
     _type: string
     domain: string
@@ -19,8 +28,8 @@ export interface Button {
 }
 
 export interface Video {
-  _key
-  _type
+  _key: string
+  _type: string
   asset: {
     assetId: string
     filename: string

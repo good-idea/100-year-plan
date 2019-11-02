@@ -3,7 +3,6 @@ import './App.css'
 import { useMainQuery } from './hooks/sanity'
 import { ErrorDisplay } from './ErrorDisplay'
 import { BackgroundVideo } from './BackgroundVideo'
-import { Button } from './Button'
 import { useAppState, AppState } from './AppState'
 
 const { useState, useRef, useEffect } = React
@@ -49,8 +48,9 @@ export const Main = ({ siteId }: MainProps) => {
       </main>
     )
   }
-  const { domains, siteData } = data
+  const { domains, siteData, siteSettings } = data
   const { video, buttons, playButtonImage } = siteData
+  const { debug } = siteSettings
   const { initialized, isPlaying } = appState
 
   const mainClass = [initialized ? 'ready' : null, isPlaying ? 'playing' : null]
@@ -59,12 +59,11 @@ export const Main = ({ siteId }: MainProps) => {
 
   const wrapperClass = [
     'main-wrapper',
+    debug ? 'debug' : false,
     scrollable ? 'main-wrapper--padding' : 'main-wrapper--cover',
   ]
     .filter(Boolean)
     .join(' ')
-
-  const otherDomains = domains.filter((d) => d !== siteData.domain)
 
   return (
     <main className={mainClass} ref={mainRef}>
@@ -72,18 +71,14 @@ export const Main = ({ siteId }: MainProps) => {
         {video ? (
           <BackgroundVideo
             playButtonImage={playButtonImage}
+            siteData={siteData}
             video={video.video}
             appState={appState}
             actions={actions}
+            domains={domains}
+            buttons={buttons}
           />
         ) : null}
-        <div className="buttons">
-          {buttons && buttons.length
-            ? buttons.map((button, index) => (
-                <Button key={index} button={button} domains={otherDomains} />
-              ))
-            : null}
-        </div>
       </div>
     </main>
   )

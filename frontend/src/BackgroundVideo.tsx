@@ -1,14 +1,18 @@
 import * as React from 'react'
 import ReactPlayer from 'react-player/lib/players/FilePlayer'
-import { Button, Video, SanityImage } from './types'
+import { Button as ButtonType, Video, SanityImage, SiteData } from './types'
 import { AppState, Actions } from './AppState'
+import { Button } from './Button'
 
 const { useEffect, useState, useRef } = React
 
 interface BackgroundVideoProps {
   video?: Video
   actions: Actions
+  domains: string[]
+  buttons?: ButtonType[]
   appState: AppState
+  siteData: SiteData
   playButtonImage: SanityImage
 }
 
@@ -25,9 +29,21 @@ interface ReactPlayerRef {
   getInternalPlayer: () => HTMLVideoElement
 }
 
+const displayTime = (seconds: number): string => {
+  const floored = Math.floor(seconds)
+  const s = floored % 60
+  const sString = s === 0 ? '00' : s < 10 ? `0${s}` : s
+  const m = Math.floor(seconds / 60)
+  const mString = m === 0 ? '00' : m < 10 ? `0${m}` : m
+  return `${mString}:${sString}`
+}
+
 export const BackgroundVideo = ({
   video,
   actions,
+  siteData,
+  buttons,
+  domains,
   appState,
   playButtonImage,
 }: BackgroundVideoProps) => {
@@ -45,8 +61,9 @@ export const BackgroundVideo = ({
    */
 
   const play = () => {
-    if (playerRef && playerRef.current)
+    if (playerRef && playerRef.current) {
       return playerRef.current.getInternalPlayer().play()
+    }
   }
 
   /**
@@ -124,44 +141,61 @@ export const BackgroundVideo = ({
     .filter(Boolean)
     .join(' ')
 
+  const otherDomains = domains.filter((d) => d !== siteData.domain)
+
   return (
-    <div className="video-wrapper">
-      <button onClick={handleClick} className={buttonClass}>
-        <img
-          src={playButtonImage.asset.url}
-          style={playButtonStyles}
-          alt="Play"
-        />
-      </button>
-      <ReactPlayer
-        ref={playerRef}
-        url={url}
-        width="100%"
-        height="100%"
-        className="main-video"
-        style={backgroundStyles}
-        loop={true}
-        controls={false}
-        playing={playing}
-        onReady={onReady}
-        onBuffer={onBuffer}
-        onBufferEnd={onBufferEnd}
-        onPlay={onPlay}
-        onPause={onPause}
-        onProgress={onProgress}
-        onError={handleError}
-        progressInterval={200}
-        playsinline
-        config={{
-          file: {
-            hlsOptions: {
-              nudgeOffset: 0.1,
-              nudgeMaxRetry: 30,
+    <>
+      <div className="timeDisplay">{displayTime(time)}</div>
+      <div className="buttons">
+        {buttons && buttons.length
+          ? buttons.map((button, index) => (
+              <Button
+                currentTime={time}
+                key={index}
+                button={button}
+                domains={otherDomains}
+              />
+            ))
+          : null}
+      </div>
+      <div className="video-wrapper">
+        <button onClick={handleClick} className={buttonClass}>
+          <img
+            src={playButtonImage.asset.url}
+            style={playButtonStyles}
+            alt="Play"
+          />
+        </button>
+        <ReactPlayer
+          ref={playerRef}
+          url={url}
+          width="100%"
+          height="100%"
+          className="main-video"
+          style={backgroundStyles}
+          loop={true}
+          controls={false}
+          playing={playing}
+          onReady={onReady}
+          onBuffer={onBuffer}
+          onBufferEnd={onBufferEnd}
+          onPlay={onPlay}
+          onPause={onPause}
+          onProgress={onProgress}
+          onError={handleError}
+          progressInterval={200}
+          playsinline
+          config={{
+            file: {
+              hlsOptions: {
+                nudgeOffset: 0.1,
+                nudgeMaxRetry: 30,
+              },
             },
-          },
-        }}
-        volume={window.location.hostname === 'localhost' ? 0 : 1}
-      />
-    </div>
+          }}
+          volume={window.location.hostname === 'localhost' ? 0 : 1}
+        />
+      </div>
+    </>
   )
 }

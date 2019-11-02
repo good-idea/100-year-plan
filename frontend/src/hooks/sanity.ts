@@ -79,6 +79,9 @@ interface MainPageData {
 
 const mainPageQuery = `
 {
+  "siteSettings": *[_type == 'siteSettings'][0]{
+    debug
+  },
   "domains": *[_type == 'website'].domain,
 	"siteData": *[_type == 'website' && domain == $siteId][0]{
     playButtonImage{
@@ -89,6 +92,9 @@ const mainPageQuery = `
     },
     buttons[]{
       label,
+      durations[]{
+        ...
+      },
       image{
         asset->{
           ...
