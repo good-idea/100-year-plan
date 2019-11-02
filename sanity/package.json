@@ -25,6 +25,7 @@
     "prop-types": "^15.7",
     "react": "^16.10",
     "react-dom": "^16.10",
+    "react-icons": "^3.8.0",
     "sanity-plugin-mux-input": "^0.2.1"
   },
   "devDependencies": {
