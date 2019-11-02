@@ -24,8 +24,35 @@ const currentTimeIsBetween = (
   end: string,
 ): boolean => time >= parseTimeString(start) && time <= parseTimeString(end)
 
+interface LinkInfo {
+  href: string
+  isExternal: boolean
+}
+
+const getLink = (button: Button): LinkInfo | void => {
+  const { siteLink, urlLink } = button
+  if (!siteLink && !urlLink) return undefined
+  if (siteLink && siteLink._type === 'page') {
+    return { href: `/${siteLink.slug.current}`, isExternal: false }
+  } else if (siteLink && siteLink._type === 'website') {
+    return { href: `https://www.${siteLink.domain}`, isExternal: true }
+  } else if (urlLink) {
+    return { href: urlLink, isExternal: true }
+  }
+}
+
 export const Button = ({ button, domains, currentTime }: ButtonProps) => {
-  const { x, y, w, image, siteLink, label, linkType, durations } = button
+  const {
+    x,
+    y,
+    w,
+    image,
+    siteLink,
+    urlLink,
+    label,
+    linkType,
+    durations,
+  } = button
   const visible =
     durations && durations.length
       ? durations.find(({ start, end }) =>
@@ -33,7 +60,8 @@ export const Button = ({ button, domains, currentTime }: ButtonProps) => {
         )
       : true
 
-  if (!image || !siteLink) return null
+  const link = getLink(button)
+  if (!image || !link) return null
   const src = image.asset.url
 
   const styles = {
@@ -43,37 +71,22 @@ export const Button = ({ button, domains, currentTime }: ButtonProps) => {
     display: visible ? 'block' : 'none',
   }
 
-  if (siteLink._type === 'page') {
-    const to = `/${siteLink.slug.current}`
+  if (!link.isExternal) {
     return (
-      <Link to={to} style={styles} className="button" rel="noopener noreferrer">
+      <Link to={link.href} style={styles} className="button">
         <img src={src} alt={label} />
       </Link>
     )
-  } else if (siteLink._type === 'website') {
-    const domain =
-      linkType === 'random'
-        ? useMemo(() => pickRandom(domains), [])
-        : siteLink
-        ? siteLink.domain
-        : undefined
-
-    if (!domain) {
-      return null
-    }
-    const link = `https://www.${domain}`
-
-    return (
-      <a
-        href={link}
-        style={styles}
-        className="button"
-        rel="noopener noreferrer"
-      >
-        <img src={src} alt={label} />
-      </a>
-    )
-  } else {
-    return null
   }
+
+  return (
+    <a
+      href={link.href}
+      style={styles}
+      className="button"
+      rel="noopener noreferrer"
+    >
+      <img src={src} alt={label} />
+    </a>
+  )
 }

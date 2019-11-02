@@ -10,6 +10,7 @@ export interface Button {
   _type: string
   image?: SanityImage
   label?: string
+  urlLink?: string
   linkType: string
   durations?: Duration[]
 
