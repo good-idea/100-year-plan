@@ -43,12 +43,15 @@ export const Page = ({ match }: PageProps) => {
   if (!loading && !data.body) return <Redirect to="/" />
   return (
     <div className="page">
-      <p className="closeButton">
-        <Link to="/">back</Link>
-      </p>
       {loading || !data ? null : (
         <div className="column">
+          <Link className="closeButton" to="/">
+            👈 back
+          </Link>
           <BlockContent serializers={customSerializers} blocks={data.body} />
+          <Link className="closeButton" to="/">
+            👈 back
+          </Link>
         </div>
       )}
     </div>

@@ -43,20 +43,21 @@ p {
   color: inherit;
 }
 
-.closeButton {
-  margin: 0;
-  position: absolute;
-  top: 10px;
-  left: 0px;
-}
-
-.closeButton a {
+a.closeButton {
+  border: 1px solid white;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 1px rgba(255, 255, 255, 0.5);
+  padding: 6px 10px;
   color: inherit;
   text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .column {
   text-align: center;
+  padding-bottom: 100px;
 }
 
 .page h1,
