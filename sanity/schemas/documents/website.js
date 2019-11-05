@@ -49,6 +49,11 @@ export const website = {
       of: [{ type: 'button' }],
     },
     {
+      name: 'favicon',
+      type: 'image',
+      title: 'Favicon',
+    },
+    {
       name: 'seo',
       type: 'seo',
     },
