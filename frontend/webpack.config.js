@@ -17,6 +17,11 @@ const query = `
 *[_type == 'website' && domain == $siteId][0]{
   name,
   domain,
+  favicon{
+    asset->{
+      url
+    } 
+  },
   seo {
     description,
     image{
@@ -92,16 +97,23 @@ module.exports = async (env) => {
   if (!siteConfig.domain) throw new Error('No site data was found')
   const siteId = siteConfig.domain
   const siteTitle = siteConfig.name
+  console.log(siteConfig)
   const imageUrl =
     siteConfig.seo && siteConfig.seo.image && siteConfig.seo.image.asset
       ? siteConfig.seo.image.asset.url
       : ''
+  const faviconUrl =
+    siteConfig.favicon && siteConfig.favicon.asset
+      ? siteConfig.favicon.asset.url
+      : ''
   const description = siteConfig.seo ? siteConfig.seo.description || '' : ''
   const canonical = `https://www.${siteConfig.domain}`
+
   const verificationCode = siteConfig.seo
     ? siteConfig.seo.verificationCode || ''
     : ''
 
+  console.log(faviconUrl)
   const isDev = env !== 'production'
   return {
     mode: isDev ? 'development' : 'production',
@@ -156,6 +168,7 @@ module.exports = async (env) => {
           siteId,
           description,
           imageUrl,
+          faviconUrl,
           canonical,
         },
       }),
