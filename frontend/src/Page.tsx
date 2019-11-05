@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import * as BlockContent from '@sanity/block-content-to-react'
 import './Page.css'
 import { usePageQuery } from './hooks/sanity'
@@ -40,6 +40,7 @@ const customSerializers = {
 export const Page = ({ match }: PageProps) => {
   const state = usePageQuery({ slug: match.params.slug })
   const { loading, data } = state
+  if (!loading && !data.body) return <Redirect to="/" />
   return (
     <div className="page">
       <p className="closeButton">

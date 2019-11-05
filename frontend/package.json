@@ -28,6 +28,8 @@
     "@types/hard-source-webpack-plugin": "^1.0.1",
     "@types/react": "^16.9.4",
     "@types/react-dom": "^16.9.1",
+    "@types/react-router": "^5.1.2",
+    "@types/react-router-dom": "^5.1.2",
     "@types/webpack": "^4.39.2",
     "@types/webpack-cleanup-plugin": "^0.5.2",
     "@types/webpack-dev-server": "^3.1.7",
